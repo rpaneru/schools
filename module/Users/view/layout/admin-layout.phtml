@@ -1,0 +1,47 @@
+<?php echo $this->doctype(); ?>
+<html>
+    <head>
+        <title>Admin</title>
+        <?php
+        echo $this->headMeta()
+            ->setCharset('UTF-8')
+            ->appendName('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge');
+        
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+            ->prependStylesheet($this->basePath('admin/bootstrap/css/bootstrap.min.css'))
+            ->prependStylesheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css')
+            ->prependStylesheet('https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css')             
+            ->prependStylesheet($this->basePath('admin/dist/css/AdminLTE.min.css'))
+            ->prependStylesheet($this->basePath('admin/dist/css/skins/skin-blue.min.css'));  
+        ?>
+    </head>
+
+    <body class="hold-transition skin-blue sidebar-mini">
+
+        <div class="wrapper">
+
+            <?php echo $this->partial('admin-header'); ?>
+
+            <?php echo $this->partial('admin-left-side-bar'); ?>
+
+            <?php echo $this->content; ?>
+
+            <?php echo $this->partial('admin-right-side-bar'); ?>
+
+            <?php echo $this->partial('admin-footer'); ?>
+
+            <div class="control-sidebar-bg"></div>
+        </div>
+
+        <?php 
+            echo $this->headScript()
+            ->appendFile($this->basePath('admin/plugins/jQuery/jQuery-2.2.0.min.js'))
+            ->appendFile($this->basePath('admin/bootstrap/js/bootstrap.min.js'))
+            ->appendFile($this->basePath('admin/dist/js/app.min.js'))   
+            ->appendFile($this->basePath('admin/js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9'))
+            ->appendFile($this->basePath('admin/js/respond.min.js'),   'text/javascript', array('conditional' => 'lt IE 9'));
+        ?>
+
+    </body>
+</html>
