@@ -1,3 +1,12 @@
+<?php
+//echo $this->currentRequest()->get('module');
+//echo $this->currentRequest()->get('controller');
+//echo $this->currentRequest()->get('action');
+//echo $this->currentRequest()->get('route');
+?>
+
+
+
 <!-- SCROLL TOP BUTTON -->
 <a class="scrollToTop" href="#"></a>
 <!-- END SCROLL TOP BUTTON -->
@@ -17,19 +26,19 @@
           </button>
           <!-- LOGO -->
           <!-- TEXT BASED LOGO -->
-          <a class="navbar-brand" href="index.html">WpF <span>Degree</span></a>              
+          <a class="navbar-brand" href="<?php echo $this->baseUrl(); ?>/application/index/index">WpF <span>Degree</span></a>              
           <!-- IMG BASED LOGO  -->
            <!-- <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="logo"></a>  -->            
 
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="course-archive.html">Course</a></li>
-            <li><a href="scholarship.html">Scholarship</a></li>
-            <li><a href="events-archive.html">Events</a></li>
-            <li><a href="gallery.html">Gallery</a></li>                
-            <li><a href="blog-archive.html">Blog</a></li>
+            <li <?php if ($this->currentRequest()->get('action') == 'index') echo 'class="active"'; ?> ><a href="<?php echo $this->baseUrl(); ?>/application/index/index">Home</a></li>
+            <li <?php if ($this->currentRequest()->get('action') == 'course-archive') echo 'class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/application/index/course-archive">Course</a></li>
+            <li <?php if ($this->currentRequest()->get('action') == 'scholarship') echo 'class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/application/index/scholarship">Scholarship</a></li>
+            <li <?php if ($this->currentRequest()->get('action') == 'events-archive') echo 'class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/application/index/events-archive">Events</a></li>
+            <li <?php if ($this->currentRequest()->get('action') == 'gallery') echo 'class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/application/index/gallery">Gallery</a></li>                
+            <li <?php if ($this->currentRequest()->get('action') == 'blog-archive') echo 'class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/application/index/blog-archive">Blog</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Page<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
@@ -38,7 +47,7 @@
                 <li><a href="#">Link Three</a></li>               
               </ul>
             </li>               
-            <li><a href="contact.html">Contact</a></li>
+            <li <?php if ($this->currentRequest()->get('action') == 'contact') echo 'class="active"'; ?>><a href="<?php echo $this->baseUrl(); ?>/application/index/contact">Contact</a></li>
           </ul>           
         </div><!--/.nav-collapse -->
       </div>     
@@ -47,49 +56,3 @@
   <!-- END MENU -->    
 </header>
 <!--=========== END HEADER SECTION ================--> 
-
-<!--=========== BEGIN SLIDER SECTION ================-->
-<section id="slider">
-  <div class="row">
-    <div class="col-lg-12 col-md-12">
-      <div class="slider_area">
-        <!-- Start super slider -->
-        <div id="slides">
-          <ul class="slides-container">                          
-            <li>
-              <img src="img/slider/2.jpg" alt="img">
-               <div class="slider_caption">
-                <h2>Largest & Beautiful University</h2>
-                <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
-                <a class="slider_btn" href="#">Know More</a>
-              </div>
-              </li>
-            <!-- Start single slider-->
-            <li>
-              <img src="img/slider/3.jpg" alt="img">
-               <div class="slider_caption slider_right_caption">
-                <h2>Better Education Environment</h2>
-                <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search</p>
-                <a class="slider_btn" href="#">Know More</a>
-              </div>
-            </li>
-            <!-- Start single slider-->
-            <li>
-              <img src="img/slider/4.jpg" alt="img">
-               <div class="slider_caption">
-                <h2>Find out you in better way</h2>
-                <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search</p>
-                <a class="slider_btn" href="#">Know More</a>
-              </div>
-            </li>
-          </ul>
-          <nav class="slides-navigation">
-            <a href="#" class="next"></a>
-            <a href="#" class="prev"></a>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!--=========== END SLIDER SECTION ================-->

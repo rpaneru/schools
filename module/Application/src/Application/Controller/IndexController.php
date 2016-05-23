@@ -16,6 +16,10 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        $customObj = new \Custom();
+        echo $customObj->test();
+        
         return new ViewModel();
     }
+       
 }

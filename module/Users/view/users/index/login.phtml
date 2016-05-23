@@ -1,0 +1,58 @@
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Page Header
+        <small>Optional description</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+        <li class="active">Here</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Your Page Content Here -->
+
+      <?php
+$form = $this->form;
+$form->prepare();
+$form->setAttribute('action', 'login');
+
+$form->setAttribute('method', 'post');
+
+// Get the form label plugin
+//$formLabel = $this->plugin('formLabel');
+
+// Render the opening tag
+echo $this->form()->openTag($form);
+?>
+<div class="form_element">
+<?php
+    $userId = $form->get('userId');
+    //echo $formLabel->openTag() . $userId->getOption('label');
+    echo $this->formInput($userId);
+    echo $this->formElementErrors($userId);
+    //echo $formLabel->closeTag();
+?></div>
+
+<div class="form_element">
+<?php
+    $email = $form->get('email');
+    //echo $formLabel->openTag() . $email->getOption('label');
+    echo $this->formInput($email);
+    echo $this->formElementErrors($email);
+    //echo $formLabel->closeTag();
+?></div>
+
+<?php echo $this->form()->closeTag() ?>
+      
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  
+  
+

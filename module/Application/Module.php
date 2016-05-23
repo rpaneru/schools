@@ -1,10 +1,14 @@
 <?php
 namespace Application;
 
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface; 
+
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
-class Module
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface, ViewHelperProviderInterface
 {
     public function onBootstrap(MvcEvent $e)
     {
@@ -14,10 +18,12 @@ class Module
         $controllerClass = get_class($controller);
         $moduleNamespace = substr($controllerClass, 0, strpos($controllerClass, '\\'));
         $config = $e->getApplication()->getServiceManager()->get('config');
-        if (isset($config['module_layouts'][$moduleNamespace])) {
-        $controller->layout($config['module_layouts'][$moduleNamespace]);
+        if (isset($config['module_layouts'][$moduleNamespace])) 
+        {
+            $controller->layout($config['module_layouts'][$moduleNamespace]);
         }
         }, 100);
+        
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
     }
@@ -30,6 +36,9 @@ class Module
     public function getAutoloaderConfig()
     {
         return array(
+            'Zend\Loader\ClassMapAutoloader' => array(
+                __DIR__ . '/autoload_classmap.php'
+            ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
@@ -37,4 +46,29 @@ class Module
             ),            
         );
     }
+    
+    public function getViewHelperConfig()
+    {
+        return array(
+          'factories' => array(
+                'currentRequest' => function ($sm) {                   
+                    $viewHelper = new View\Helper\CurrentRequest();
+                    return $viewHelper;
+                },
+                'baseUrl' => function ($sm) {
+                    $viewHelper = new View\Helper\BaseUrl();
+                    return $viewHelper;
+                },
+                'currentUrl' => function ($sm) {
+                    $viewHelper = new View\Helper\CurrentUrl();
+                    return $viewHelper;
+                },
+                'dateFormatIndia' => function ($sm) {
+                    $viewHelper = new View\Helper\DateFormatIndia();
+                    return $viewHelper;
+                }
+            )
+        );
+   }
+
 }

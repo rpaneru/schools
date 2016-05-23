@@ -3,6 +3,8 @@ namespace Users;
 
  use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
  use Zend\ModuleManager\Feature\ConfigProviderInterface;
+ 
+use Users\Form\LoginForm;
 
  class Module implements AutoloaderProviderInterface, ConfigProviderInterface
  {
@@ -24,4 +26,17 @@ namespace Users;
      {
          return include __DIR__ . '/config/module.config.php';
      }
+     
+        
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'loginForm' => function($sm){
+                    $form = new LoginForm();
+                    return $form;
+                }
+            )
+        );
+    }
  }

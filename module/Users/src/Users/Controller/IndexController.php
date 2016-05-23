@@ -11,4 +11,15 @@ class IndexController extends AbstractActionController
         return new ViewModel(array());
     }
     
+    public function loginAction()
+    {       
+        //echo $this->apiPath();
+        
+        $form =  $this-> serviceLocator->get('loginForm');
+        
+        return new ViewModel(array(
+            'form' => $form
+        ));
+    }
+    
 }

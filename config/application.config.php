@@ -1,5 +1,5 @@
 <?php
-return array(
+return array(    
      'modules' => array(
          'Application',
          'Users'

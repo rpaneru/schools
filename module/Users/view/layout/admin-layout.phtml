@@ -9,11 +9,11 @@
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge');
         
         echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-            ->prependStylesheet($this->basePath('admin/bootstrap/css/bootstrap.min.css'))
+            ->prependStylesheet($this->baseUrl().'/admin/bootstrap/css/bootstrap.min.css')
             ->prependStylesheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css')
-            ->prependStylesheet('https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css')             
-            ->prependStylesheet($this->basePath('admin/dist/css/AdminLTE.min.css'))
-            ->prependStylesheet($this->basePath('admin/dist/css/skins/skin-blue.min.css'));  
+            ->prependStylesheet($this->baseUrl().'/admin/css/ionicons.min.css')             
+            ->prependStylesheet($this->baseUrl().'/admin/dist/css/AdminLTE.min.css')
+            ->prependStylesheet($this->baseUrl().'/admin/dist/css/skins/skin-blue.min.css');  
         ?>
     </head>
 
@@ -36,11 +36,11 @@
 
         <?php 
             echo $this->headScript()
-            ->appendFile($this->basePath('admin/plugins/jQuery/jQuery-2.2.0.min.js'))
-            ->appendFile($this->basePath('admin/bootstrap/js/bootstrap.min.js'))
-            ->appendFile($this->basePath('admin/dist/js/app.min.js'))   
-            ->appendFile($this->basePath('admin/js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9'))
-            ->appendFile($this->basePath('admin/js/respond.min.js'),   'text/javascript', array('conditional' => 'lt IE 9'));
+            ->appendFile($this->baseUrl().'/admin/plugins/jQuery/jQuery-2.2.0.min.js')
+            ->appendFile($this->baseUrl().'/admin/bootstrap/js/bootstrap.min.js')
+            ->appendFile($this->baseUrl().'/admin/dist/js/app.min.js')   
+            ->appendFile($this->baseUrl().'/admin/js/html5shiv.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
+            ->appendFile($this->baseUrl().'/admin/js/respond.min.js',   'text/javascript', array('conditional' => 'lt IE 9'));
         ?>
 
     </body>

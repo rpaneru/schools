@@ -182,7 +182,7 @@ jQuery(function($){
 	/* ----------------------------------------------------------- */
 	/*  9. PRELOADER 
 	/* ----------------------------------------------------------- */
-	  window.addEventListener('DOMContentLoaded', function() {
+    /*window.addEventListener('DOMContentLoaded', function() {
         new QueryLoader2(document.querySelector("body"), {
             barColor: "#efefef",
             backgroundColor: "#111",
@@ -191,7 +191,7 @@ jQuery(function($){
             minimumTime: 200,
             fadeOutTime: 1000
         });
-    });
+    });*/
 
 
     /* ----------------------------------------------------------- */
