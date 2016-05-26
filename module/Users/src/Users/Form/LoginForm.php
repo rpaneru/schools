@@ -26,14 +26,14 @@ class LoginForm extends Form implements InputFilterProviderInterface
         ));
 
         $this->add(array(
-            'name' => 'email',
-            'type' => 'Zend\Form\Element\Email',             
+            'name' => 'password',
+            'type' => 'Zend\Form\Element\Password',             
             'attributes' => array(
-                    'placeholder' => 'you@domain.com',
+                    'placeholder' => '**********',
                     'required' => 'required'
             ),
             'options' => array(
-             'label' => 'Primary Email',
+             'label' => 'Password',
             )
         ));
                 
@@ -41,8 +41,8 @@ class LoginForm extends Form implements InputFilterProviderInterface
             'name' => 'submit',
             'attributes' => array(
                 'type'  => 'submit',
-                'value' => 'Go',
-                'id' => 'submitbutton',
+                'value' => 'Login',
+                'id' => 'submitButton',
             ),
         ));  
                 
@@ -69,7 +69,7 @@ class LoginForm extends Form implements InputFilterProviderInterface
            ),
            
            
-           'email' => array(
+           'password' => array(
                'required' => 'true',
                'validators' => array(
                    array(
