@@ -18,6 +18,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Vi
         $controllerClass = get_class($controller);
         $moduleNamespace = substr($controllerClass, 0, strpos($controllerClass, '\\'));
         $config = $e->getApplication()->getServiceManager()->get('config');
+        
         if (isset($config['module_layouts'][$moduleNamespace])) 
         {
             $controller->layout($config['module_layouts'][$moduleNamespace]);

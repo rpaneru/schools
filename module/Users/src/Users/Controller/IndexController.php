@@ -11,23 +11,35 @@ class IndexController extends AbstractActionController
         return new ViewModel(array());
     }
     
+    
     public function loginAction()
     {       
-        //echo $this->apiPath();
-        
         $form =  $this-> serviceLocator->get('loginForm');
         
+        $this->layout('layout/layout');
+        
+        return new ViewModel(array(
+            'form' => $form
+        ));
+    }
+    
+    
+    public function loginProcessAction()
+    {     
         $request = $this->getRequest();
         if ($request->isPost()) 
         {
+            
             $loginForm = new \Users\Form\LoginForm();
-            $form->setInputFilter($loginForm->getInputFilter());
-            $form->setData($request->getPost());
+            
+            $loginForm->setInputFilter($loginForm->getInputFilter());
 
-            if ($form->isValid()) 
-            {                
+            $loginForm->setData($request->getPost());
+
+            if ($loginForm->isValid()) 
+            {    
                 $formData = $request-> getPost();
-                
+
                 $paramArray = array(
                     'userId'=>$formData->userId,
                     'password'=>md5($formData->password),
@@ -40,21 +52,21 @@ class IndexController extends AbstractActionController
                
                 $paramArray['hash'] = $newHash;
                 
-                $url = $this->apiPath()."login/".urlencode( json_encode($paramArray) );
-                
+                echo json_encode($paramArray);
+                echo '<br />';
+                echo urlencode( json_encode($paramArray) );
+                echo '<br />';
+                echo $url = $this->apiPath()."login/".urlencode( json_encode($paramArray) );
+                die;
                 $curlReq = new \CurlRequest();
                 $userDetails = $curlReq->httpGet($url);
                 $userDetails = json_decode($userDetails);
-                var_dump($userDetails);
-                
-                die;
+                return $userDetails;
                 
             }
         }
-        
-        return new ViewModel(array(
-            'form' => $form
-        ));
+
+        return new ViewModel();
     }
     
 }

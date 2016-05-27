@@ -1,5 +1,5 @@
 <?php
 return array(
-    'CurlRequest' => 'vendor/Custom/CurlRequest.php',
-    'Security' => 'vendor/Custom/Security.php'
+    'CurlRequest' => 'vendor/custom/CurlRequest.php',
+    'Security' => 'vendor/custom/Security.php'
 );
