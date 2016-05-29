@@ -1,10 +1,16 @@
 <?php
 namespace Users;
 
- use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
- use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
  
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\TableGateway;
+
 use Users\Form\LoginForm;
+
+use Users\Model\OauthAuthorizationCodes;
+use Users\Model\OauthAuthorizationCodesTable;
 
  class Module implements AutoloaderProviderInterface, ConfigProviderInterface
  {
@@ -32,9 +38,24 @@ use Users\Form\LoginForm;
     {
         return array(
             'factories' => array(
-                'loginForm' => function($sm){
+                'loginForm' => function($sm)
+                {
                     $form = new LoginForm();
                     return $form;
+                },
+                'OauthAuthorizationCodesTableGateway' => function ($sm) 
+                {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new OauthAuthorizationCodes());
+                    return new TableGateway('oauth_authorization_codes', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Users\Model\OauthAuthorizationCodesTable' => function($sm)
+                {
+                    $tableGateway = $sm-> get('OauthAuthorizationCodesTableGateway');
+                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
+                    $table = new OauthAuthorizationCodesTable($dbAdapter,$tableGateway);                        
+                    return $table;
                 }
             )
         );
