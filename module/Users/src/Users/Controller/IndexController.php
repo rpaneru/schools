@@ -35,9 +35,7 @@ class IndexController extends AbstractActionController
     
     
     public function indexAction()
-    {
-        $container = new Container('userDetails');
-        $container->getManager()->getStorage()->clear();
+    {        
         return new ViewModel(array());
     }
     
@@ -161,4 +159,15 @@ class IndexController extends AbstractActionController
         }
         return new ViewModel(array('userDetails'=>$userDetails));    
     }   
+    
+    public function logoutAction()
+    {
+        $sm = $this->getServiceLocator();
+        
+        $container = new Container('userDetails');
+        $container->getManager()->getStorage()->clear();
+        
+        $baseUrlHelper = $sm->get('ViewHelperManager')->get('BaseUrl');
+        $this->redirect()->toUrl( $baseUrlHelper().'/users/index/login' );
+    }
 }
