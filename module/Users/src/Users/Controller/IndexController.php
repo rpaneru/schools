@@ -121,22 +121,19 @@ class IndexController extends AbstractActionController
         $baseUrlHelper = $sm->get('ViewHelperManager')->get('BaseUrl');
         
         $clientTokenPost = array(      
-                        /*"grant_type" => "password",
+                        /*"grant_type" => "authorization_code",
                         "code" => $authorizationCode,
-                        "redirect_uri" => $baseUrlHelper().'/users/index/request-oauth2-token',
-                        "client_id" => 'testuser',
-                        "client_secret" => 'testpass',*/
+                        "redirect_uri" => $baseUrlHelper().'/users/index/request-oauth2-token',*/
+                        "client_id" => 'testclient',
+                        "client_secret" => 'testpass',
                         "grant_type"=> "password",
-                        "user_id"=> "testuser",
+                        "username"=> "testuser",
                         "password"=> "testpass"
                     );
 
         $curlReq = new \CurlRequest($this->apiPath());
         $authObj = $curlReq->getOauth2Token($clientTokenPost);
         
-        
-        var_dump($authObj);
-        die;
         $accessToken = $authObj->access_token;
         $refreshToken = $authObj->refresh_token;
         
