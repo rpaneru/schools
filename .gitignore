@@ -7,3 +7,7 @@ nbproject
 .idea
 .project
 .settings
+vendor
+composer.phar
+config/autoload/global.php
+config/autoload/local.php

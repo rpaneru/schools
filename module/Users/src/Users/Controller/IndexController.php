@@ -92,8 +92,7 @@ class IndexController extends AbstractActionController
 
                 $paramArray = array(
                     'userId'=>$formData->userId,
-                    'password'=>md5($formData->password),
-                    'profileTypeId'=>"2"
+                    'password'=>md5($formData->password)
                 );
                 
                 $paramObject = (object)$paramArray;
@@ -106,7 +105,8 @@ class IndexController extends AbstractActionController
                 $container->loginData = $paramArray;
                 
                 $baseUrlHelper = $sm->get('ViewHelperManager')->get('BaseUrl');
-                $rediretUrl = $this->apiPath().'oauth/authorize?response_type=code&client_id=testclient&redirect_uri='.$baseUrlHelper().'/users/index/request-oauth2-token&state=a';
+                //$rediretUrl = $this->apiPath().'oauth/authorize?response_type=code&client_id=testclient&redirect_uri='.$baseUrlHelper().'/users/index/request-oauth2-token&state=a';
+                $rediretUrl = $baseUrlHelper().'/users/index/request-oauth2-token';
                 $this->redirect()->toUrl( $rediretUrl );               
             }
         }
@@ -116,21 +116,27 @@ class IndexController extends AbstractActionController
     public function requestOauth2TokenAction()
     {
         $sm = $this->getServiceLocator();
-        $authorizationCode = $_REQUEST['code'];
+        //$authorizationCode = $_REQUEST['code'];
         
         $baseUrlHelper = $sm->get('ViewHelperManager')->get('BaseUrl');
         
         $clientTokenPost = array(      
-                        "grant_type" => "authorization_code",
+                        /*"grant_type" => "password",
                         "code" => $authorizationCode,
                         "redirect_uri" => $baseUrlHelper().'/users/index/request-oauth2-token',
-                        "client_id" => 'testclient',
-                        "client_secret" => 'testpass',
+                        "client_id" => 'testuser',
+                        "client_secret" => 'testpass',*/
+                        "grant_type"=> "password",
+                        "user_id"=> "testuser",
+                        "password"=> "testpass"
                     );
 
         $curlReq = new \CurlRequest($this->apiPath());
         $authObj = $curlReq->getOauth2Token($clientTokenPost);
         
+        
+        var_dump($authObj);
+        die;
         $accessToken = $authObj->access_token;
         $refreshToken = $authObj->refresh_token;
         
