@@ -92,14 +92,14 @@ class IndexController extends AbstractActionController
 
                 $paramArray = array(
                     'userId'=>$formData->userId,
-                    'password'=>md5($formData->password)
+                    'password'=>md5($formData->password)                    
                 );
                 
                 $paramObject = (object)$paramArray;
                 $secObj = new \Security();
-                $newHash = $secObj->generateAndMatchHash($paramObject); 
-               
+                $newHash = $secObj->generateAndMatchHash($paramObject);
                 $paramArray['hash'] = $newHash;
+                $paramArray['rawPassword'] = $formData->password;
                 
                 $container = new Container('userDetails');
                 $container->loginData = $paramArray;
@@ -116,19 +116,25 @@ class IndexController extends AbstractActionController
     public function requestOauth2TokenAction()
     {
         $sm = $this->getServiceLocator();
-        //$authorizationCode = $_REQUEST['code'];
+        $authorizationCode = $_REQUEST['code'];
         
+        $container = new Container('userDetails');
         $baseUrlHelper = $sm->get('ViewHelperManager')->get('BaseUrl');
         
-        $clientTokenPost = array(      
-                        /*"grant_type" => "authorization_code",
+        /*$clientTokenPost = array(      
+                        "grant_type" => "authorization_code",
                         "code" => $authorizationCode,
-                        "redirect_uri" => $baseUrlHelper().'/users/index/request-oauth2-token',*/
+                        "redirect_uri" => $baseUrlHelper().'/users/index/request-oauth2-token',
+                        "client_id" => 'testclient',
+                        "client_secret" => 'testpass',
+                    );*/
+        
+        $clientTokenPost = array(                              
                         "client_id" => 'testclient',
                         "client_secret" => 'testpass',
                         "grant_type"=> "password",
-                        "username"=> "testuser",
-                        "password"=> "testpass"
+                        "username"=> $container->loginData['userId'],
+                        "password"=> $container->loginData['rawPassword']
                     );
 
         $curlReq = new \CurlRequest($this->apiPath());
@@ -137,7 +143,7 @@ class IndexController extends AbstractActionController
         $accessToken = $authObj->access_token;
         $refreshToken = $authObj->refresh_token;
         
-        $container = new Container('userDetails');
+        
         $container->refreshToken = $refreshToken;
         
         $this->redirect()->toUrl( $baseUrlHelper().'/users/index/user-details?accessToken='.$accessToken );
@@ -149,8 +155,12 @@ class IndexController extends AbstractActionController
         $sm = $this->getServiceLocator();
         $accessToken = $_REQUEST['accessToken'];
         
-        $container = new Container('userDetails');       
-        $queryString = 'login/'.urlencode( json_encode($container->loginData) );
+        $container = new Container('userDetails');   
+        //$paramArray['rawPassword']
+        $loginData = $container->loginData;
+        unset($loginData["rawPassword"]);
+
+        $queryString = 'login/'.urlencode( json_encode($loginData) );
                 
         $curlReq = new \CurlRequest($this->apiPath());
         $userDetails = $curlReq->httpGet($queryString, $accessToken);

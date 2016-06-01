@@ -7,6 +7,6 @@ class ApiPathPlugin extends AbstractPlugin
 {
     public function __invoke() 
     {
-        return 'http://schools-api/';
+        return 'http://demo-api/';
     }
 }
