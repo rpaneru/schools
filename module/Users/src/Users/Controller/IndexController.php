@@ -93,14 +93,18 @@ class IndexController extends AbstractActionController
                 $curlReq = new \CurlRequest($this->apiPath());
                 $authObj = $curlReq->getOauth2Token($clientTokenPost);
                 
+                if( $authObj->status == 401)
+                {
+                    $this->redirect()->toUrl( $baseUrlHelper().'/users/index/login' );
+                }
+                
                 $accessToken = $authObj->access_token;
                 $refreshToken = $authObj->refresh_token;
-                
-                
+                                
                 $queryString = "login/".urlencode( json_encode($paramArray) );
                 $curlReq = new \CurlRequest($this->apiPath());
                 $userDetails = $curlReq->httpGet($queryString, $accessToken);
-                $userDetails = json_decode($userDetails);                
+                $userDetails = json_decode($userDetails);                 
                 
                 $container = new Container('userDetails');
                 $container->accessToken = $accessToken;
