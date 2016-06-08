@@ -80,7 +80,7 @@ class IndexController extends AbstractActionController
                 $paramObject = (object)$paramArray;
                 $secObj = new \Security();
                 $newHash = $secObj->generateAndMatchHash($paramObject);
-                $paramArray['hash'] = $newHash;                
+                $paramArray['hash'] = $newHash; 
         
                 $clientTokenPost = array(                              
                     "client_id" => 'testclient',
@@ -92,26 +92,15 @@ class IndexController extends AbstractActionController
 
                 $curlReq = new \CurlRequest($this->apiPath());
                 $authObj = $curlReq->getOauth2Token($clientTokenPost);
-
+                
                 $accessToken = $authObj->access_token;
                 $refreshToken = $authObj->refresh_token;
-        
                 
-                $queryString = 'user-details/';
                 
+                $queryString = "login/".urlencode( json_encode($paramArray) );
                 $curlReq = new \CurlRequest($this->apiPath());
                 $userDetails = $curlReq->httpGet($queryString, $accessToken);
-                $userDetails = json_decode($userDetails);
-                
-                var_dump($userDetails);die;
-                
-                if($userDetails == null)
-                {
-                    echo 'Invalid Credentials';
-                }
-                
-                $accessToken = $authObj->access_token;
-                $refreshToken = $authObj->refresh_token;
+                $userDetails = json_decode($userDetails);                
                 
                 $container = new Container('userDetails');
                 $container->accessToken = $accessToken;
