@@ -42,6 +42,13 @@ class IndexController extends AbstractActionController
     
     public function loginAction()
     {
+        $message = $this->params()->fromQuery('message');
+        if($message)
+        {
+            echo '<br /><br /><br /><br />'.$message;
+        }
+        
+        
         $sm = $this->getServiceLocator();
         
         $form =  $this-> serviceLocator->get('loginForm');
@@ -93,9 +100,10 @@ class IndexController extends AbstractActionController
                 $curlReq = new \CurlRequest($this->apiPath());
                 $authObj = $curlReq->getOauth2Token($clientTokenPost);
                 
+                
                 if( $authObj->status == 401)
                 {
-                    $this->redirect()->toUrl( $baseUrlHelper().'/users/index/login' );
+                    $this->redirect()->toUrl( $baseUrlHelper().'/users/index/login?message='. urlencode($authObj->detail) );                    
                 }
                 
                 $accessToken = $authObj->access_token;
@@ -124,6 +132,6 @@ class IndexController extends AbstractActionController
         $container->getManager()->getStorage()->clear();
         
         $baseUrlHelper = $sm->get('ViewHelperManager')->get('BaseUrl');
-        $this->redirect()->toUrl( $baseUrlHelper().'/users/index/login' );
+        $this->redirect()->toUrl( $baseUrlHelper().'/users/index/login?message='. urlencode("You are logged out successfully.") );
     }
 }
