@@ -27,8 +27,7 @@ class CurlRequest
     
     public function httpGet($queryString,$accessToken)
     {
-        $authorization = "Authorization: Bearer ".$accessToken;
-        
+        $authorization = "Authorization: Bearer ".$accessToken; 
         $ch = curl_init();  
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization ));

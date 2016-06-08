@@ -42,14 +42,20 @@ class IndexController extends AbstractActionController
     
     public function loginAction()
     {
+        $sm = $this->getServiceLocator();
+        $baseUrlHelper = $sm->get('ViewHelperManager')->get('BaseUrl');
+        $container = new Container('userDetails'); 
+        
         $message = $this->params()->fromQuery('message');
         if($message)
         {
             echo '<br /><br /><br /><br />'.$message;
         }
         
-        
-        $sm = $this->getServiceLocator();
+        if($container->offsetExists('accessToken'))
+        {            
+            $this->redirect()->toUrl( $baseUrlHelper().'/users/index/bypass-login');
+        }
         
         $form =  $this-> serviceLocator->get('loginForm');
         
@@ -58,6 +64,24 @@ class IndexController extends AbstractActionController
         return new ViewModel(array(
             'form' => $form
         ));
+    }
+    
+    
+    public function bypassLoginAction()
+    {
+        $sm = $this->getServiceLocator();
+        $baseUrlHelper = $sm->get('ViewHelperManager')->get('BaseUrl');
+        $container = new Container('userDetails'); 
+        
+        $queryString = "user-details/test";
+        $curlReq = new \CurlRequest($this->apiPath());
+        $userDetails = $curlReq->httpGet($queryString, $container->offsetGet('accessToken') );
+        $userDetails = json_decode($userDetails);        
+        
+        
+        $view = new ViewModel(array('userDetails'=>$userDetails)); 
+        $view->setTemplate('users/index/login-process.phtml'); 
+        return $view;
     }
     
     
@@ -99,11 +123,13 @@ class IndexController extends AbstractActionController
 
                 $curlReq = new \CurlRequest($this->apiPath());
                 $authObj = $curlReq->getOauth2Token($clientTokenPost);
-                
-                
-                if( $authObj->status == 401)
+  
+                if( property_exists($authObj, 'status') )
                 {
-                    $this->redirect()->toUrl( $baseUrlHelper().'/users/index/login?message='. urlencode($authObj->detail) );                    
+                    if( $authObj->status == 401)
+                    {
+                        $this->redirect()->toUrl( $baseUrlHelper().'/users/index/login?message='. urlencode($authObj->detail) );                    
+                    }
                 }
                 
                 $accessToken = $authObj->access_token;
@@ -112,7 +138,7 @@ class IndexController extends AbstractActionController
                 $queryString = "login/".urlencode( json_encode($paramArray) );
                 $curlReq = new \CurlRequest($this->apiPath());
                 $userDetails = $curlReq->httpGet($queryString, $accessToken);
-                $userDetails = json_decode($userDetails);                 
+                $userDetails = json_decode($userDetails); 
                 
                 $container = new Container('userDetails');
                 $container->accessToken = $accessToken;
@@ -122,16 +148,18 @@ class IndexController extends AbstractActionController
             }
         }       
     }
-
+    
     
     public function logoutAction()
     {
         $sm = $this->getServiceLocator();
         
         $container = new Container('userDetails');
-        $container->getManager()->getStorage()->clear();
+        $container->getManager()->getStorage()->clear('accessToken'); 
+        $container->getManager()->getStorage()->clear('refreshToken'); 
+        $container->getManager()->destroy();
         
         $baseUrlHelper = $sm->get('ViewHelperManager')->get('BaseUrl');
-        $this->redirect()->toUrl( $baseUrlHelper().'/users/index/login?message='. urlencode("You are logged out successfully.") );
+        $this->redirect()->toUrl( $baseUrlHelper().'/users/index/login?message='. urlencode("You are successfully logged out.") );
     }
 }
