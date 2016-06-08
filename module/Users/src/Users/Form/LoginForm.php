@@ -12,6 +12,10 @@ class LoginForm extends Form implements InputFilterProviderInterface
     {
        parent::__construct("Login Form");
        
+       
+        $this->setAttributes(array(
+            'novalidate' => 'novalidate'
+        ));
 
         $this-> add(array(
             'name' => 'userId',
