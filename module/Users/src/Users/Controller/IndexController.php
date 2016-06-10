@@ -11,7 +11,6 @@ class IndexController extends AbstractActionController
     protected $OauthClientsTable;
     protected $OauthAuthorizationCodesTable;
 
-
     public function getOauthClientsTable()
     {
         if (!$this->OauthClientsTable) 
@@ -143,7 +142,8 @@ class IndexController extends AbstractActionController
                 $container = new Container('userDetails');
                 $container->accessToken = $accessToken;
                 $container->refreshToken = $refreshToken;
-        
+                $container->roleId = $roleId;
+                
                 return new ViewModel(array('userDetails'=>$userDetails));        
             }
         }       
@@ -157,6 +157,7 @@ class IndexController extends AbstractActionController
         $container = new Container('userDetails');
         $container->getManager()->getStorage()->clear('accessToken'); 
         $container->getManager()->getStorage()->clear('refreshToken'); 
+        $container->getManager()->getStorage()->clear('roleId'); 
         $container->getManager()->destroy();
         
         $baseUrlHelper = $sm->get('ViewHelperManager')->get('BaseUrl');
