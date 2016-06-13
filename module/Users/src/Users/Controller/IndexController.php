@@ -138,11 +138,11 @@ class IndexController extends AbstractActionController
                 $curlReq = new \CurlRequest($this->apiPath());
                 $userDetails = $curlReq->httpGet($queryString, $accessToken);
                 $userDetails = json_decode($userDetails); 
-                
+
                 $container = new Container('userDetails');
                 $container->accessToken = $accessToken;
                 $container->refreshToken = $refreshToken;
-                $container->roleId = $roleId;
+                $container->roleId = $userDetails->roleId;
                 
                 return new ViewModel(array('userDetails'=>$userDetails));        
             }
