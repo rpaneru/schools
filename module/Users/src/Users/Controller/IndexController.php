@@ -134,7 +134,7 @@ class IndexController extends AbstractActionController
                 $accessToken = $authObj->access_token;
                 $refreshToken = $authObj->refresh_token;
                                 
-                $queryString = "login/".urlencode( json_encode($paramArray) );
+                $queryString = "user-details/".urlencode( json_encode($paramArray) );
                 $curlReq = new \CurlRequest($this->apiPath());
                 $userDetails = $curlReq->httpGet($queryString, $accessToken);
                 $userDetails = json_decode($userDetails); 
